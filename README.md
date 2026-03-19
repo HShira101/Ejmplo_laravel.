@@ -1,3 +1,16 @@
+## 📌 Comandos Rádpidos Docker (Fijado)
+
+Instrucciones básica para el proyecto (requiere docker):
+* **Prender servidor web:** `docker-compose up -d` (Construcción de la imagen)
+* **Apagar servidor web:** `docker-compose down` (Detención de los contenedores, en caso de no usar dockerdesktop)
+* **Entrar a la consola de Laravel (para comandos Artisan/NPM):** `docker-compose exec app bash`
+  * *Una vez dentro:* `php artisan migrate`, `npm run dev`, `php artisan make:controller ...`
+* **Ejecutar Artisan de forma rápida (sin entrar):** `docker-compose exec app php artisan {tu_comando}`
+
+---
+
+<h1> Creditos Laravel </h1>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -6,18 +19,6 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
-
-## 📌 Comandos Rádpidos Docker (Fijado)
-
-Para tu día a día desarrollando esta aplicación web:
-
-* **Prender servidor web:** `docker-compose up -d`
-* **Apagar servidor web:** `docker-compose down`
-* **Entrar a la consola de Laravel (para comandos Artisan/NPM):** `docker-compose exec app bash`
-  * *Una vez dentro:* `php artisan migrate`, `npm run dev`, `php artisan make:controller ...`
-* **Ejecutar Artisan de forma rápida (sin entrar):** `docker-compose exec app php artisan {tu_comando}`
-
----
 
 ## About Laravel
 
