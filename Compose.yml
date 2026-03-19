@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      # Indica que se debe usar el Dockerfile que se encuentra en el directorio actual.
+      context: .
+      dockerfile: Dockerfile
+    container_name: Prueba_hoteleria #Nombre del contenedor.
+    ports:
+      - "8000:80" #Puertos que se van a utilizar (primero el de la computadora, el segundo es el puerto del contenedor).
+    volumes:
+      # Sincroniza los archivos del proyecto local con el contenedor.
+      # Así los cambios que se hagan en el código se reflejarán inmediatamente sin tener que reconstruir la imagen.
+      - .:/var/www/html
+    restart: unless-stopped
