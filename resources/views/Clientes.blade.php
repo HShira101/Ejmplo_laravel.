@@ -33,6 +33,15 @@
             border-bottom: 1px solid #ddd;
         }
 
+        th {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: #006064;
+        }
+
         tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
@@ -47,36 +56,71 @@
     <div class="tabla-contenedor">
         <h1>Gestión de Clientes</h1>
 
-        <table>
+        <table id="tablaClientes">
             <thead>
                 <tr>
-                    <th>RUT</th>
-                    <th>Nombre Completo</th>
-                    <th>Teléfono</th>
-                    <th>Correo Electrónico</th>
+                    <th onclick="ordenarTabla(0)">RUT</th>
+                    <th onclick="ordenarTabla(1)">Nombre Completo</th>
+                    <th onclick="ordenarTabla(2)">Teléfono</th>
+                    <th onclick="ordenarTabla(3)">Correo Electrónico</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Datos de ejemplos estáticos -->
-                <tr>
-                    <td>12.345.678-9</td>
-                    <td>Juan Pérez Silva</td>
-                    <td>+56 9 1234 5678</td>
-                    <td>juan.perez@ejemplo.com</td>
-                </tr>
-                <tr>
-                    <td>18.765.432-1</td>
-                    <td>María López Gómez</td>
-                    <td>+56 9 9876 5432</td>
-                    <td>m.lopez@ejemplo.com</td>
-                </tr>
-                <tr>
-                    <td>9.876.543-K</td>
-                    <td>Carlos Rodríguez</td>
-                    <td>+56 9 5555 4444</td>
-                    <td>carlos.rod@ejemplo.com</td>
-                </tr>
+                @foreach ($clientes as $cliente)
+                    <tr>
+                        <td>{{ $cliente->rut }}</td>
+                        <td>{{ $cliente->nombre_completo }}</td>
+                        <td>{{ $cliente->telefono }}</td>
+                        <td>{{ $cliente->correo }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 @endsection
+
+@push('js')
+    <script>
+        function ordenarTabla(n) {
+            var tabla, filas, cambiando, i, x, y, deberiaCambiar, dir, conteoCambios = 0;
+            tabla = document.getElementById("tablaClientes");
+            cambiando = true;
+            dir = "asc";
+
+            while (cambiando) {
+                cambiando = false;
+                filas = tabla.rows;
+
+                for (i = 1; i < (filas.length - 1); i++) {
+                    deberiaCambiar = false;
+
+                    x = filas[i].getElementsByTagName("TD")[n];
+                    y = filas[i + 1].getElementsByTagName("TD")[n];
+
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            deberiaCambiar = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            deberiaCambiar = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (deberiaCambiar) {
+                    filas[i].parentNode.insertBefore(filas[i + 1], filas[i]);
+                    cambiando = true;
+                    conteoCambios++;
+                } else {
+                    if (conteoCambios == 0 && dir == "asc") {
+                        dir = "desc";
+                        cambiando = true;
+                    }
+                }
+            }
+        }
+    </script>
+@endpush

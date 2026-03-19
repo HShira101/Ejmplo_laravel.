@@ -33,6 +33,15 @@
             border-bottom: 1px solid #ddd;
         }
 
+        th {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: #006064;
+        }
+
         tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
@@ -47,32 +56,69 @@
     <div class="tabla-contenedor">
         <h1>Gestión de Agencias</h1>
 
-        <table>
+        <table id="tablaAgencias">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Número de Reservas</th>
+                    <th onclick="ordenarTabla(0)">Nombre</th>
+                    <th onclick="ordenarTabla(1)">Teléfono</th>
+                    <th onclick="ordenarTabla(2)">Número de Reservas</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Datos de ejemplos estáticos -->
-                <tr>
-                    <td>Booking.com</td>
-                    <td>+31 20 715 6890</td>
-                    <td>145</td>
-                </tr>
-                <tr>
-                    <td>Expedia</td>
-                    <td>+1 800 397 3342</td>
-                    <td>89</td>
-                </tr>
-                <tr>
-                    <td>Despegar</td>
-                    <td>+56 2 2938 1000</td>
-                    <td>52</td>
-                </tr>
+                @foreach ($agencias as $agencia)
+                    <tr>
+                        <td>{{ $agencia->nombre }}</td>
+                        <td>{{ $agencia->telefono }}</td>
+                        <td>{{ $agencia->reservas->count() }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 @endsection
+
+@push('js')
+    <script>
+        function ordenarTabla(n) {
+            var tabla, filas, cambiando, i, x, y, deberiaCambiar, dir, conteoCambios = 0;
+            tabla = document.getElementById("tablaAgencias");
+            cambiando = true;
+            dir = "asc";
+
+            while (cambiando) {
+                cambiando = false;
+                filas = tabla.rows;
+
+                for (i = 1; i < (filas.length - 1); i++) {
+                    deberiaCambiar = false;
+
+                    x = filas[i].getElementsByTagName("TD")[n];
+                    y = filas[i + 1].getElementsByTagName("TD")[n];
+
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            deberiaCambiar = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            deberiaCambiar = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (deberiaCambiar) {
+                    filas[i].parentNode.insertBefore(filas[i + 1], filas[i]);
+                    cambiando = true;
+                    conteoCambios++;
+                } else {
+                    if (conteoCambios == 0 && dir == "asc") {
+                        dir = "desc";
+                        cambiando = true;
+                    }
+                }
+            }
+        }
+    </script>
+@endpush

@@ -9,25 +9,31 @@ class HotelSeeder extends Seeder
 {
     public function run(): void
     {
-        Hotel::create([
-            'nombre' => 'Hotel Paraíso',
-            'telefono' => '+123 456 7890',
-            'direccion' => 'Av. de la Playa 123',
-            'categoria' => '4 Estrellas',
-        ]);
+        Hotel::firstOrCreate(
+            ['nombre' => 'Hotel Paraíso'],
+            [
+                'telefono' => '+123 456 7890',
+                'direccion' => 'Av. de la Playa 123',
+                'categoria' => '4 Estrellas',
+            ]
+        );
         
-        Hotel::create([
-            'nombre' => 'Hotel Costa Azul',
-            'telefono' => '+198 765 4321',
-            'direccion' => 'Calle Marítima 45',
-            'categoria' => '3 Estrellas',
-        ]);
+        Hotel::firstOrCreate(
+            ['nombre' => 'Hotel Costa Azul'],
+            [
+                'telefono' => '+198 765 4321',
+                'direccion' => 'Calle Marítima 45',
+                'categoria' => '3 Estrellas',
+            ]
+        );
         
-        Hotel::create([
-            'nombre' => 'Hotel Montaña',
-            'telefono' => '+112 233 4455',
-            'direccion' => 'Paseo los Alpes 90',
-            'categoria' => '5 Estrellas',
-        ]);
+        Hotel::firstOrCreate(
+            ['nombre' => 'Hotel Montaña'],
+            [
+                'telefono' => '+112 233 4455',
+                'direccion' => 'Paseo los Alpes 90',
+                'categoria' => '5 Estrellas',
+            ]
+        );
     }
 }

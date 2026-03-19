@@ -69,15 +69,17 @@
                     <th onclick="ordenarTabla(1)">Hotel</th>
                     <th onclick="ordenarTabla(2)">Tipo</th>
                     <th onclick="ordenarTabla(3)">Categoría</th>
+                    <th onclick="ordenarTabla(4)">Estado</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($habitaciones as $habitacion)
                     <tr>
                         <td>{{ $habitacion->numero }}</td>
-                        <td>Hotel ID: {{ $habitacion->hotel_id }}</td>
+                        <td>{{ $habitacion->hotel->nombre }}</td>
                         <td>{{ $habitacion->tipo }}</td>
                         <td>{{ $habitacion->categoria }}</td>
+                        <td>{{ $habitacion->en_uso ? '⚠ En Uso' : '✔ Libre' }}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -1,5 +1,10 @@
 <?php
 
+// Los controladores permiten manejar la lógica de las vistas.
+// de este modo las vistas se mantienen limpias y ordenadas.
+// Las URL le piden al controlador las peticiones (vistas, peticiones a base de datos, etc).
+// y en base a eso el controlador entrega la vista o la respuesta.
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;

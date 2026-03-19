@@ -1,3 +1,7 @@
+## Proyecto de prueba en laravel
+
+Este proyecto usado de modo de ejemplo para aprender laravel.
+
 ## 📌 Comandos Rádpidos Docker (Fijado)
 
 Instrucciones básica para el proyecto (requiere docker):

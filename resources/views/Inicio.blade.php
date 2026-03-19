@@ -1,3 +1,20 @@
+{{--
+@ Extends toma la plantilla que se encuentra en layauts
+y la inserta como esqueleto para lo demás, en este caso toma
+la plantilla app.blade.app, basta con el nombre antes de .blade.php
+
+@push('css/js') la plantilla layaut, otorga un espacio para agregar mas estilos o JS.
+sobreescribe o agrega estilos a la que ya se encuentra en la plantilla.
+Ejemplo:
+@push('css')
+    <style>
+        /* Aquí va el código CSS que se insertará en la plantilla app.blade.php */
+    </style>
+@endpush
+
+@section('content') es el contenido que se agregará a la plantilla, ver layaut
+para saber donde se insertará.    
+ --}}
 @extends('layouts.app')
 
 @push('css')
@@ -97,17 +114,17 @@
         <div class="tarjetas-grid">
             <div class="tarjeta">
                 <h3>Habitaciones en Uso</h3>
-                <div class="numero">15</div>
+                <div class="numero">{{ $habitacionesEnUso }} / {{ $habitacionesTotal }}</div>
             </div>
 
             <div class="tarjeta" style="border-top-color: #ff9800;">
                 <h3>Reservas Activas</h3>
-                <div class="numero">8</div>
+                <div class="numero">{{ $reservasActivas }}</div>
             </div>
 
             <div class="tarjeta" style="border-top-color: #4caf50;">
-                <h3>Habitaciones Libres</h3>
-                <div class="numero">22</div>
+                <h3>Reservas Sin Check-in</h3>
+                <div class="numero">{{ $reservasSinEjecutar }}</div>
             </div>
         </div>
 
@@ -119,32 +136,29 @@
                     <tr>
                         <th>Cliente</th>
                         <th>Habitación</th>
-                        <th>Agencia</th>
                         <th>Observación Especial</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>María López Gómez</td>
-                        <td>205</td>
-                        <td>Expedia</td>
-                        <td><span class="badge-alerta">Importante</span> Cuna extra requerida, el vuelo llega de madrugada.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Carlos Rodríguez</td>
-                        <td>Suite 3A</td>
-                        <td>Despegar</td>
-                        <td><span class="badge-alerta">Importante</span> Alergia severa a frutos secos (Avisado al
-                            restaurante).</td>
-                    </tr>
-                    <tr>
-                        <td>Juan Pérez Silva</td>
-                        <td>101</td>
-                        <td>Booking.com</td>
-                        <td><span class="badge-alerta">Importante</span> Requiere factura impresa a nombre de empresa al
-                            salir.</td>
-                    </tr>
+                    @forelse($reservasConNotas as $reserva)
+                        @foreach ($reserva->observaciones as $obs)
+                            <tr>
+                                <td>{{ $reserva->cliente ? $reserva->cliente->nombre_completo : 'Anónimo' }}</td>
+                                <td>{{ $reserva->habitacion ? 'Nº ' . $reserva->habitacion->numero . ($reserva->habitacion->hotel ? ' (' . $reserva->habitacion->hotel->nombre . ')' : '') : 'N/A' }}
+                                </td>
+                                <td>
+                                    <span class="badge-alerta">{{ ucfirst($obs['tipo'] ?? 'Nota') }}</span>
+                                    {{ $obs['detalle'] ?? '' }}
+                                    <strong>({{ ucfirst($obs['estado'] ?? 'N/A') }})</strong>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #777; padding: 20px;">No hay reservaciones
+                                con notas importantes en este momento.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

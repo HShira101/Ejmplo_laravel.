@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('habitacions', function (Blueprint $table) {
-            $table->id();
-            $table->string('numero');
-            $table->unsignedBigInteger('hotel_id');
-            $table->string('tipo');
-            $table->string('categoria')->nullable();
-            $table->boolean('en_uso')->default(false);
+        Schema::create('clientes', function (Blueprint $table) {
+            $table->integer('rut')->primary();
+            $table->string('nombre_completo');
+            $table->string('telefono')->comment('String en lugar de int para poder guardar "-" cuando es anónimo');
+            $table->string('correo');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('habitacions');
+        Schema::dropIfExists('clientes');
     }
 };
